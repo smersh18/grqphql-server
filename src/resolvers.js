@@ -2,8 +2,8 @@ import { users } from "./db";
 
 const resolvers = {
     Query: {
-        user: (parent, { id }, context, info) => {
-            return users.find(user => user.id === id);
+        user: (parent, { name }, context, info) => {
+            return users.find(user => user.name === name);
         },
         users: (parent, args, context, info) => {
             return users;
@@ -18,7 +18,7 @@ const resolvers = {
             return newUser;
         },
         updateUser: (parent, { id, name, email, age }, context, info) => {
-            let newUser = users.find(user => user.id === id);
+            let newUser = users.find(user => user.id == id);
 
             newUser.name = name;
             newUser.email = email;
@@ -27,13 +27,21 @@ const resolvers = {
             return newUser;
         },
         deleteUser: (parent, { id }, context, info) => {
-            const userIndex = users.findIndex(user => user.id === id);
+            const userIndex = users.findIndex(user => user.id == id);
 
             if (userIndex === -1) throw new Error("User not found.");
 
             const deletedUsers = users.splice(userIndex, 1);
 
             return deletedUsers[0];
+        },
+        changeUser: (parent, { id, age }, context, info) => {
+
+            let changedUser = users.find(user => user.id == id);
+
+            changedUser.age = age;
+
+            return changedUser;
         }
     }
 };
